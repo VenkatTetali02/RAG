@@ -30,6 +30,7 @@ for filename in filepaths:
 # Split the documents for performance
 text_splitter=RecursiveCharacterTextSplitter(chunk_size=500)
 all_docs_splitted=text_splitter.split_documents(all_docs)
+embeddings=OpenAIEmbeddings()
 embeddings = BedrockEmbeddings(model_id="amazon.titan-embed-text-v2:0")
 #Define the LLM
 llm=ChatGroq(temperature=0,model="llama-3.3-70b-versatile")
@@ -39,7 +40,7 @@ llm=BedrockLLM(
             )
 
 # store the documents into the Vector Store
-vector_store=Chroma.from_documents(documents=all_docs_splitted,embedding=OpenAIEmbeddings(),persist_directory=filepath)
+vector_store=Chroma.from_documents(documents=all_docs_splitted,embedding=embeddings,persist_directory=filepath)
 
 vector_store=Chroma(persist_directory=filepath,embedding_function=OpenAIEmbeddings())
 
